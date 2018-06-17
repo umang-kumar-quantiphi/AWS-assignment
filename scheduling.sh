@@ -37,18 +37,18 @@ import boto3
 import datetime
 def lambda_handler(event, context):
     ec2=boto3.client('ec2')
-    id=i-0ee74379bc92c36e2
+    id='i-0cc3fa01feb71a4dd'
     now=datetime.datetime.now()
-    start=matrix[(int(x) for x in event['start'].split())]
-    stop=matrix[(int(x) for x in event['stop'].split())]
+    start=[(int(x) for x in event['start'].split())]
+    stop=[(int(x) for x in event['stop'].split())]
     # case 1
     if 9<now.hour<start[0]: 
         response=ec2.stop_instances(
         InstanceIds=id)
-    if start[0]<now.hour<9
+    if start[0]<now.hour<9:
         response=ec2.start_instances(
         InstanceIds=id)
-    if start[0]<9<now.hour
+    if start[0]<9<now.hour:
         response=ec2.start_instances(
         InstanceIds=id)
     if 18<now.hour<stop[0]:
@@ -82,4 +82,4 @@ echo Enter the Start time for today in the format HH MM
 read start
 echo Enter the Stop Time for today in the format HH MM
 read stop
-aws lambda invoke --function-name 'Umang_Scheduler' --payload '{"start":"$start","stop":"$stop"}'
+aws lambda invoke --function-name 'Umang_Scheduler' --invocation-type 'Event' --payload '{"start":"$start","stop":"$stop"}' outputfile.txt 
